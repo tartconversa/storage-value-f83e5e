@@ -1,0 +1,2 @@
+reserve_id,start,end,required_kw,duration_h,known_at
+R1,2025-01-06T08:00:00+08:00,2025-04-06T08:00:00+08:00,80,3,2025-01-05T08:00:00+08:00

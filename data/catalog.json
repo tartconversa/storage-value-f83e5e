@@ -1,0 +1,419 @@
+{
+  "title": "储能运行价值的可执行反事实评估",
+  "encoding": "UTF-8",
+  "delimiter": ",",
+  "missing": "",
+  "synthetic": true,
+  "tables": [
+    {
+      "name": "battery",
+      "description": "物理与衰减契约。",
+      "columns": [
+        {
+          "name": "battery_id",
+          "type": "string",
+          "description": "电池",
+          "nullable": true
+        },
+        {
+          "name": "capacity_kwh",
+          "type": "number",
+          "description": "初始容量",
+          "nullable": true
+        },
+        {
+          "name": "min_soc_kwh",
+          "type": "number",
+          "description": "电量下限",
+          "nullable": true
+        },
+        {
+          "name": "max_power_kw",
+          "type": "number",
+          "description": "功率上限",
+          "nullable": true
+        },
+        {
+          "name": "charge_eff",
+          "type": "number",
+          "description": "充电效率",
+          "nullable": true
+        },
+        {
+          "name": "discharge_eff",
+          "type": "number",
+          "description": "放电效率",
+          "nullable": true
+        },
+        {
+          "name": "degradation_kwh_per_mwh",
+          "type": "number",
+          "description": "每兆瓦时容量衰减",
+          "nullable": true
+        },
+        {
+          "name": "initial_soc_kwh",
+          "type": "number",
+          "description": "最初电量",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "battery_id"
+      ],
+      "references": [],
+      "path": "data/battery.csv",
+      "row_count": 1,
+      "sha256": "af2d3e8eacd3946640858981cacbe282be3ed4a8a48149fe1d4fcbd81e91647e"
+    },
+    {
+      "name": "operations",
+      "description": "历史运行与实际计量有缺口。电池未提供全程电量真值。",
+      "columns": [
+        {
+          "name": "period_id",
+          "type": "string",
+          "description": "时段",
+          "nullable": true
+        },
+        {
+          "name": "start",
+          "type": "datetime",
+          "description": "开始",
+          "nullable": true
+        },
+        {
+          "name": "other_load_kw",
+          "type": "number",
+          "description": "其他负荷",
+          "nullable": true
+        },
+        {
+          "name": "price",
+          "type": "number",
+          "description": "电价",
+          "nullable": true
+        },
+        {
+          "name": "command_kw",
+          "type": "number",
+          "description": "指令",
+          "nullable": true
+        },
+        {
+          "name": "actual_kw",
+          "type": "number",
+          "description": "实际",
+          "nullable": true
+        },
+        {
+          "name": "execution",
+          "type": "string",
+          "description": "执行状态",
+          "nullable": true
+        },
+        {
+          "name": "meter_scope",
+          "type": "string",
+          "description": "joint或separate",
+          "nullable": true
+        },
+        {
+          "name": "transformer_kw",
+          "type": "number",
+          "description": "总表",
+          "nullable": true
+        },
+        {
+          "name": "available_at",
+          "type": "datetime",
+          "description": "可知",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "period_id"
+      ],
+      "references": [],
+      "path": "data/operations.csv",
+      "row_count": 3120,
+      "sha256": "e95a245f7f8eb41c9ae2d3fca6ab17b1eefa98de0cccad1037569ed53f42acac"
+    },
+    {
+      "name": "forecasts",
+      "description": "每个目标时段保留发布时刻，生成情景只依照可知信息。",
+      "columns": [
+        {
+          "name": "forecast_id",
+          "type": "string",
+          "description": "预报",
+          "nullable": true
+        },
+        {
+          "name": "target",
+          "type": "datetime",
+          "description": "目标时刻",
+          "nullable": true
+        },
+        {
+          "name": "issued_at",
+          "type": "datetime",
+          "description": "发布时间",
+          "nullable": true
+        },
+        {
+          "name": "load_kw",
+          "type": "number",
+          "description": "负荷预报",
+          "nullable": true
+        },
+        {
+          "name": "price",
+          "type": "number",
+          "description": "电价预报",
+          "nullable": true
+        },
+        {
+          "name": "available_at",
+          "type": "datetime",
+          "description": "可知",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "forecast_id"
+      ],
+      "references": [],
+      "path": "data/forecasts.csv",
+      "row_count": 3120,
+      "sha256": "52501ef842fdfb85b384c583915f72613ab18f8a15bdaa8e6873eef994a61de8"
+    },
+    {
+      "name": "state_observations",
+      "description": "有限实际电量校核，不预写完整轨迹。",
+      "columns": [
+        {
+          "name": "state_id",
+          "type": "string",
+          "description": "观测",
+          "nullable": true
+        },
+        {
+          "name": "period_id",
+          "type": "string",
+          "description": "时段",
+          "nullable": true
+        },
+        {
+          "name": "soc_kwh",
+          "type": "number",
+          "description": "起始电量",
+          "nullable": true
+        },
+        {
+          "name": "error_kwh",
+          "type": "number",
+          "description": "绝对误差",
+          "nullable": true
+        },
+        {
+          "name": "available_at",
+          "type": "datetime",
+          "description": "可知",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "state_id"
+      ],
+      "references": [
+        {
+          "column": "period_id",
+          "target_table": "operations",
+          "target_column": "period_id"
+        }
+      ],
+      "path": "data/state_observations.csv",
+      "row_count": 10,
+      "sha256": "7e411fdab9a9707bc477138ae8c424b05effcbdb3cff4aa56491243e459dedc7"
+    },
+    {
+      "name": "tariffs",
+      "description": "月度需量计费与变压器约束。",
+      "columns": [
+        {
+          "name": "month",
+          "type": "string",
+          "description": "月份",
+          "nullable": true
+        },
+        {
+          "name": "demand_yuan_kw",
+          "type": "number",
+          "description": "每千瓦月费",
+          "nullable": true
+        },
+        {
+          "name": "transformer_limit_kw",
+          "type": "number",
+          "description": "容量",
+          "nullable": true
+        },
+        {
+          "name": "already_peak_kw",
+          "type": "number",
+          "description": "评审时已发生峰值",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "month"
+      ],
+      "references": [],
+      "path": "data/tariffs.csv",
+      "row_count": 3,
+      "sha256": "1d9933526f829d196678a8059f728d04da1db923685f197b6efc4a88d27e6966"
+    },
+    {
+      "name": "reserve",
+      "description": "保供开始时需要可连续供应的功率与时长。",
+      "columns": [
+        {
+          "name": "reserve_id",
+          "type": "string",
+          "description": "义务",
+          "nullable": true
+        },
+        {
+          "name": "start",
+          "type": "datetime",
+          "description": "开始",
+          "nullable": true
+        },
+        {
+          "name": "end",
+          "type": "datetime",
+          "description": "结束",
+          "nullable": true
+        },
+        {
+          "name": "required_kw",
+          "type": "number",
+          "description": "保供功率",
+          "nullable": true
+        },
+        {
+          "name": "duration_h",
+          "type": "number",
+          "description": "连续小时",
+          "nullable": true
+        },
+        {
+          "name": "known_at",
+          "type": "datetime",
+          "description": "可知",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "reserve_id"
+      ],
+      "references": [],
+      "path": "data/reserve.csv",
+      "row_count": 1,
+      "sha256": "cb44f9ccbdc6ec5e224dee769904a83ab932e689a28c70c7b06eaf19a4881b7c"
+    },
+    {
+      "name": "priority_notice",
+      "description": "新增保供义务不改变过去已执行行动。",
+      "columns": [
+        {
+          "name": "notice_id",
+          "type": "string",
+          "description": "通知",
+          "nullable": true
+        },
+        {
+          "name": "reserve_id",
+          "type": "string",
+          "description": "被替换义务",
+          "nullable": true
+        },
+        {
+          "name": "required_kw",
+          "type": "number",
+          "description": "新功率",
+          "nullable": true
+        },
+        {
+          "name": "duration_h",
+          "type": "number",
+          "description": "新小时",
+          "nullable": true
+        },
+        {
+          "name": "effective_at",
+          "type": "datetime",
+          "description": "生效",
+          "nullable": true
+        },
+        {
+          "name": "known_at",
+          "type": "datetime",
+          "description": "可知",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "notice_id"
+      ],
+      "references": [],
+      "path": "data/priority_notice.csv",
+      "row_count": 1,
+      "sha256": "a30f484cc9c90f5cc74211fc866612a15eec7aac4df8f6986b523a09c587f032"
+    },
+    {
+      "name": "policies",
+      "description": "用户选择的规则条件，所有条件只可使用当时可知量。",
+      "columns": [
+        {
+          "name": "policy_id",
+          "type": "string",
+          "description": "候选",
+          "nullable": true
+        },
+        {
+          "name": "charge_below_price",
+          "type": "number",
+          "description": "低价充电阈值",
+          "nullable": true
+        },
+        {
+          "name": "discharge_above_price",
+          "type": "number",
+          "description": "高价放电阈值",
+          "nullable": true
+        },
+        {
+          "name": "forecast_peak_kw",
+          "type": "number",
+          "description": "预报削峰触发",
+          "nullable": true
+        },
+        {
+          "name": "reserve_margin_kwh",
+          "type": "number",
+          "description": "额外保供余量",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "policy_id"
+      ],
+      "references": [],
+      "path": "data/policies.csv",
+      "row_count": 3,
+      "sha256": "0d8e6c7b4d2bca56694a1a1433580de559ce9859880238a8cdbbe1bbabcd98b5"
+    }
+  ]
+}

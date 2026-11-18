@@ -1,0 +1,2 @@
+battery_id,capacity_kwh,min_soc_kwh,max_power_kw,charge_eff,discharge_eff,degradation_kwh_per_mwh,initial_soc_kwh
+B1,800,80,220,0.94,0.92,0.04,420
