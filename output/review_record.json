@@ -1,0 +1,113 @@
+{
+  "assumptions": [
+    "预报按资料发布时刻可知，无预报时策略静置",
+    "变压器总表缺测时段不核验充电余量并显式标注",
+    "月需量按 already_peak_kw 与模型峰值的较大者计费",
+    "电池容量按累计放电量线性衰减，效率为常数",
+    "负责人选择 A：评审接受"
+  ],
+  "coverage": {
+    "actual_known_slots": 3089,
+    "actual_missing_slots": 31,
+    "joint_meter_slots": 27,
+    "missing_command_charge_kwh": 280.0,
+    "missing_command_discharge_kwh": 162.5,
+    "total_slots": 3120,
+    "transformer_missing_slots": 33
+  },
+  "created_at": "2026-11-19T09:29:33.090122+08:00",
+  "data_window": [
+    "2025-01-01T00:00:00+08:00",
+    "2025-03-07T00:00:00+08:00"
+  ],
+  "expected_metrics": {
+    "A": {
+      "capacity_loss_kwh": 1.0799,
+      "charge_mwh": 28.8964,
+      "demand_yuan": 84360.0,
+      "discharge_mwh": 24.8376,
+      "energy_yuan": 565302.06,
+      "equivalent_cycles": 31.089,
+      "reserve_blocked_slots": 468,
+      "reserve_shortfall_slots": 0,
+      "round_trip_efficiency": 0.8595,
+      "total_yuan": 649662.06,
+      "unchecked_transformer_slots": 33
+    },
+    "B": {
+      "capacity_loss_kwh": 1.0486,
+      "charge_mwh": 28.0856,
+      "demand_yuan": 91724.99,
+      "discharge_mwh": 24.1181,
+      "energy_yuan": 569860.25,
+      "equivalent_cycles": 30.187,
+      "reserve_blocked_slots": 569,
+      "reserve_shortfall_slots": 0,
+      "round_trip_efficiency": 0.8587,
+      "total_yuan": 661585.24,
+      "unchecked_transformer_slots": 33
+    },
+    "C": {
+      "capacity_loss_kwh": 0.0,
+      "charge_mwh": 0.4043,
+      "demand_yuan": 84360.0,
+      "discharge_mwh": 0.0,
+      "energy_yuan": 581101.28,
+      "equivalent_cycles": 0.0,
+      "reserve_blocked_slots": 0,
+      "reserve_shortfall_slots": 0,
+      "round_trip_efficiency": 0.0,
+      "total_yuan": 665461.28,
+      "unchecked_transformer_slots": 33
+    },
+    "NO_BATTERY": {
+      "capacity_loss_kwh": 0.0,
+      "charge_mwh": 0.0,
+      "demand_yuan": 84360.0,
+      "discharge_mwh": 0.0,
+      "energy_yuan": 580959.79,
+      "equivalent_cycles": 0.0,
+      "reserve_blocked_slots": 0,
+      "reserve_shortfall_slots": 0,
+      "round_trip_efficiency": 0.0,
+      "total_yuan": 665319.79,
+      "unchecked_transformer_slots": 0
+    }
+  },
+  "expected_monthly_savings": {
+    "A": {
+      "2025-01": 9943.636942082667,
+      "2025-02": 4991.296106966154,
+      "2025-03": 722.8065502414829
+    },
+    "B": {
+      "2025-01": 5870.743649232434,
+      "2025-02": 1601.1028407175327,
+      "2025-03": -3737.291480426429
+    },
+    "C": {
+      "2025-01": -141.48936170211527,
+      "2025-02": 0.0,
+      "2025-03": 0.0
+    }
+  },
+  "expected_savings_yuan": {
+    "A": 15657.739599290187,
+    "B": 3734.5550095234066,
+    "C": -141.4893617022317
+  },
+  "known_forecast_lead_hours": 3.0,
+  "ranking": [
+    "A",
+    "B",
+    "C"
+  ],
+  "rejected": {},
+  "review_id": "review-20250101-20250307",
+  "selected_policy_id": "A",
+  "tariff_already_peak": {
+    "2025-01": 760.0,
+    "2025-02": 790.0,
+    "2025-03": 730.0
+  }
+}
